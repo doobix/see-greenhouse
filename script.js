@@ -83,7 +83,8 @@ const go = async () => {
     {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
   ];
   let isLoading = true;
-  document.getElementById("results").innerHTML = `<div class="spinner-border" role="status"></div>`;
+  document.getElementById("refresh").classList.add('is-loading');
+  document.getElementById("results").innerHTML = ``;
   
   for (let x=0; x < companies.length; x++) {
     const company = companies[x];
@@ -92,13 +93,15 @@ const go = async () => {
 
     if (isLoading) {
       isLoading = false;
-      document.getElementById("results").innerHTML = '';
+      document.getElementById("refresh").classList.remove('is-loading');
     }
     
-    document.getElementById("results").innerHTML += `<div class="row p-1">`;
-    document.getElementById("results").innerHTML += `<h4>${company.name} (${count} roles)</h4>`;
-    document.getElementById("results").innerHTML += jobs;
-    document.getElementById("results").innerHTML += `</div>`;
+    document.getElementById("results").innerHTML += `
+      <div class="box">
+        <div class="title is-4">${company.name} (${count} roles)</div>
+        ${jobs}
+      </div>
+    `;
   }
 }
 if (typeof module !== 'undefined') {

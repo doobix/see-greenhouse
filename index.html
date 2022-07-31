@@ -1,17 +1,19 @@
 <html>
   <head>
     <title>see greenhouse</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
   <body>
-    <div class="container">
-      <div class="container p-1">
-        <button onclick="go()" class="btn btn-primary">refresh</button>
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="mb-4">
+          <button onclick="go()" id="refresh" class="button is-primary is-loading">refresh</button>
+        </div>
+        <div id="results">
+          <!-- <div class="spinner-border" role="status"></div> -->
+        </div>
       </div>
-      <div id="results" class="container p-1">
-        <div class="spinner-border" role="status"></div>
-      </div>
-    </div>
+    </section>
     <script src="script.js"></script>
     <script>go();</script>
   </body>
