@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: CI/CD
 
 # Controls when the workflow will run
 on:
@@ -33,3 +33,8 @@ jobs:
 
       # Run test
       - run: npm test
+
+      # Deploy to gh-pages
+      - uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
