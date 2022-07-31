@@ -101,5 +101,13 @@ const go = async () => {
     document.getElementById("results").innerHTML += `</div>`;
   }
 }
-
-go();
+if (typeof module !== 'undefined') {
+  module.exports = {
+    includeKeywords,
+    excludeKeywords,
+    sortJobs,
+    createJobOutput,
+    getEngineerJobs,
+    go
+  }
+}
