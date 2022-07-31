@@ -97,10 +97,12 @@ const go = async () => {
     }
     
     document.getElementById("results").innerHTML += `
-      <div class="box">
-        <div class="title is-4">${company.name} (${count} roles)</div>
-        ${jobs}
-      </div>
+      <article class="panel is-info">
+        <p class="panel-heading">${company.name} (${count} roles)</p>
+        <div class="p-4">
+          ${jobs}
+        </div>
+      </article>
     `;
   }
 }
