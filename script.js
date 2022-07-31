@@ -1,56 +1,72 @@
+let includeList = [
+  'Engineer'
+];
+
+let excludeList = [
+  'Manager',
+  'Director',
+  'Data',
+  'Machine Learning',
+  'Security',
+  'Network',
+  'Systems',
+  'Principal',
+  'Reliability',
+  'Android',
+  'iOS',
+  'Staff',
+  '3D',
+  'Backend',
+  'ML',
+  'Infrastructure',
+  'Support',
+  'VP',
+  'Technical',
+  'CodeQL',
+  'Salesforce'
+];
+
+function includeKeywords(job) {
+  return includeList.every((word) => job.title.includes(word));
+}
+
+function excludeKeywords(job) {
+  return excludeList.every((word) => !job.title.includes(word));
+}
+
+function sortJobs(a, b) {
+  const aTitle = a.title.toLowerCase();
+  const bTitle = b.title.toLowerCase();
+
+  if (aTitle < bTitle) {
+    return -1;
+  } else if (aTitle > bTitle) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+function createJobOutput(job, options) {
+  const dept = job.departments.length ? job.departments[0].name : '';
+  const loc = job.location && job.location.name ? job.location.name : '';
+  let jobTitle = `<b><a href="${job.absolute_url}">${job.title}</a></b>`;
+  jobTitle = options.showDept && dept ? dept + ' - ' + jobTitle : jobTitle;
+  jobTitle = options.showLoc && loc ? jobTitle + ' (' + loc + ')' : jobTitle;
+  return jobTitle;
+}
+
 const getEngineerJobs = async (company, options) => {
   options = options || {};
   let res = await fetch(`https://api.greenhouse.io/v1/boards/${company}/jobs?content=true`);
   let data = await res.json();
   let filtered = data.jobs
-    .filter((j) => j.title.includes('Engineer'))
-    .filter((j) => !j.title.includes('Manager'))
-    .filter((j) => !j.title.includes('Director'))
-    .filter((j) => !j.title.includes('Data'))
-    .filter((j) => !j.title.includes('Machine Learning'))
-    .filter((j) => !j.title.includes('Security'))
-    .filter((j) => !j.title.includes('Network'))
-    .filter((j) => !j.title.includes('Systems'))
-    .filter((j) => !j.title.includes('Principal'))
-    .filter((j) => !j.title.includes('Reliability'))
-    .filter((j) => !j.title.includes('Android'))
-    .filter((j) => !j.title.includes('iOS'))
-    .filter((j) => !j.title.includes('Staff'))
-    .filter((j) => !j.title.includes('3D'))
-    .filter((j) => !j.title.includes('Backend'))
-    .filter((j) => !j.title.includes('ML'))
-    .filter((j) => !j.title.includes('Infrastructure'))
-    .filter((j) => !j.title.includes('Support'))
-    .filter((j) => !j.title.includes('VP'))
-    .filter((j) => !j.title.includes('Technical'))
-    .filter((j) => !j.title.includes('CodeQL'))
-    .filter((j) => !j.title.includes('Salesforce'))
+    .filter(includeKeywords)
+    .filter(excludeKeywords)
     .filter((j) => options.filterLocCA ? j.location.name.includes('CA') : true)
     .filter((j) => options.filterLocSF ? j.location.name.includes('San Francisco') : true)
-    .sort((a, b) => {
-      if (options.sortAfter) {
-        return 0;
-      }
-      
-      const aTitle = a.title.toLowerCase();
-      const bTitle = b.title.toLowerCase();
-    
-      if (aTitle < bTitle) {
-        return -1;
-      } else if (aTitle > bTitle) {
-        return 1;
-      } else {
-        return 0;
-      }
-    })
-    .map((j)=>{
-      const dept = j.departments.length ? j.departments[0].name : '';
-      const loc = j.location && j.location.name ? j.location.name : '';
-      let jobTitle = `<b><a href="${j.absolute_url}">${j.title}</a></b>`;
-      jobTitle = options.showDept && dept ? dept + ' - ' + jobTitle : jobTitle;
-      jobTitle = options.showLoc && loc ? jobTitle + ' (' + loc + ')' : jobTitle;
-      return jobTitle;
-    });
+    .sort(options.sortAfter ? () => {} : sortJobs)
+    .map((j) => createJobOutput(j, options));
   
   if (options.sortAfter) {
     filtered.sort();
