@@ -75,7 +75,18 @@ const getEngineerJobs = async (company, options) => {
   return [filtered.join('<br />'), filtered.length];
 }
 
+function displayKeywords() {
+  includeList.forEach((word) => {
+    document.getElementById("includes").innerHTML += `<span class="tag m-1">${word}</span>`;
+  });
+  excludeList.forEach((word) => {
+    document.getElementById("excludes").innerHTML += `<span class="tag m-1">${word}</span>`;
+  });
+}
+
 const go = async () => {
+  displayKeywords();
+
   const companies = [
     {name: 'discord'},
     {name: 'github', showDept: true, showLoc: true},
@@ -106,6 +117,7 @@ const go = async () => {
     `;
   }
 }
+
 if (typeof module !== 'undefined') {
   module.exports = {
     includeKeywords,
