@@ -28,5 +28,8 @@ jobs:
       # Set up Node.js
       - uses: actions/setup-node@v3.4.1
       
+      # npm install
+      - run: npm ci
+
       # Run test
       - run: npm test
