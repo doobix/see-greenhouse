@@ -67,28 +67,66 @@ test('displays keywords', () => {
 
 test('does not delete keyword', () => {
   const beforeIncludeList = script.getKeywords('include');
-  expect(beforeIncludeList.includes('engineer')).toStrictEqual(true);
+  expect(beforeIncludeList.includes('engineer')).toBe(true);
   script.deleteKeyword('include', 'eng');
   const afterIncludeList = script.getKeywords('include');
-  expect(afterIncludeList.includes('engineer')).toStrictEqual(true);
+  expect(beforeIncludeList.length).toEqual(afterIncludeList.length);
 
   const beforeExcludeList = script.getKeywords('exclude');
-  expect(beforeExcludeList.includes('happy')).toStrictEqual(false);
+  expect(beforeExcludeList.includes('happy')).toBe(false);
   script.deleteKeyword('exclude', 'happy');
   const afterExcludeList = script.getKeywords('exclude');
-  expect(afterExcludeList.includes('happy')).toStrictEqual(false);
+  expect(beforeExcludeList.length).toEqual(afterExcludeList.length);
 });
 
 test('deletes keywords correctly', () => {
   const beforeIncludeList = script.getKeywords('include');
-  expect(beforeIncludeList.includes('engineer')).toStrictEqual(true);
+  expect(beforeIncludeList.includes('engineer')).toBe(true);
   script.deleteKeyword('include', 'engineer');
   const afterIncludeList = script.getKeywords('include');
-  expect(afterIncludeList.includes('engineer')).toStrictEqual(false);
+  expect(afterIncludeList.includes('engineer')).toBe(false);
 
   const beforeExcludeList = script.getKeywords('exclude');
-  expect(beforeExcludeList.includes('3d')).toStrictEqual(true);
+  expect(beforeExcludeList.includes('3d')).toBe(true);
   script.deleteKeyword('exclude', '3d');
   const afterExcludeList = script.getKeywords('exclude');
-  expect(afterExcludeList.includes('3d')).toStrictEqual(false);
+  expect(afterExcludeList.includes('3d')).toBe(false);
+});
+
+test('adds keywords correctly', () => {
+  document.body.innerHTML = `
+    <input id="include-input" value="engineer">
+    <input id="exclude-input" value="3d" />
+  `;
+
+  const beforeIncludeList = script.getKeywords('include');
+  expect(beforeIncludeList.includes('engineer')).toBe(false);
+  script.addKeyword('include');
+  const afterIncludeList = script.getKeywords('include');
+  expect(afterIncludeList.includes('engineer')).toBe(true);
+
+  const beforeExcludeList = script.getKeywords('exclude');
+  expect(beforeExcludeList.includes('3d')).toBe(false);
+  script.addKeyword('exclude');
+  const afterExcludeList = script.getKeywords('exclude');
+  expect(afterExcludeList.includes('3d')).toBe(true);
+});
+
+test('does not add duplicate keyword', () => {
+  document.body.innerHTML = `
+    <input id="include-input" value="engineer">
+    <input id="exclude-input" value="3d" />
+  `;
+
+  const beforeIncludeList = script.getKeywords('include');
+  expect(beforeIncludeList.includes('engineer')).toBe(true);
+  script.addKeyword('include', 'engineer');
+  const afterIncludeList = script.getKeywords('include');
+  expect(beforeIncludeList.length).toEqual(afterIncludeList.length);
+
+  const beforeExcludeList = script.getKeywords('exclude');
+  expect(beforeExcludeList.includes('3d')).toBe(true);
+  script.addKeyword('exclude', '3d');
+  const afterExcludeList = script.getKeywords('exclude');
+  expect(beforeExcludeList.length).toEqual(afterExcludeList.length);
 });

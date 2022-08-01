@@ -109,7 +109,7 @@ function deleteKeyword(list, keyword) {
   }
 }
 
-function updateKeyword(list) {
+function addKeyword(list) {
   const input = document.getElementById(`${list}-input`);
   const keyword = input.value.toLowerCase();
   const array = list === 'include' ? includeList : excludeList;
@@ -165,5 +165,6 @@ if (typeof module !== 'undefined') {
     clearKeywords,
     displayKeywords,
     deleteKeyword,
+    addKeyword,
   }
 }
