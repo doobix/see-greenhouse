@@ -24,10 +24,10 @@
                 <div class="p-4">
                   <div class="field has-addons">
                     <div class="control">
-                      <input id="include" class="input" type="text" placeholder="keyword">
+                      <input id="include-input" class="input" type="text" placeholder="keyword">
                     </div>
                     <div class="control">
-                      <a class="button is-link">
+                      <a class="button is-link" onclick="updateKeyword('include');go();">
                         include
                       </a>
                     </div>
@@ -42,10 +42,10 @@
                 <div class="p-4">
                   <div class="field has-addons">
                     <div class="control">
-                      <input id="exclude" class="input" type="text" placeholder="keyword">
+                      <input id="exclude-input" class="input" type="text" placeholder="keyword">
                     </div>
                     <div class="control">
-                      <a class="button is-link">
+                      <a class="button is-link" onclick="updateKeyword('exclude');go();">
                         exclude
                       </a>
                     </div>

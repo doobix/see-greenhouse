@@ -1,37 +1,37 @@
 let includeList = [
-  'Engineer'
+  'engineer'
 ];
 
 let excludeList = [
-  'Manager',
-  'Director',
-  'Data',
-  'Machine Learning',
-  'Security',
-  'Network',
-  'Systems',
-  'Principal',
-  'Reliability',
-  'Android',
-  'iOS',
-  'Staff',
-  '3D',
-  'Backend',
-  'ML',
-  'Infrastructure',
-  'Support',
-  'VP',
-  'Technical',
-  'CodeQL',
-  'Salesforce'
+  'manager',
+  'director',
+  'data',
+  'machine learning',
+  'security',
+  'network',
+  'systems',
+  'principal',
+  'reliability',
+  'android',
+  'ios',
+  'staff',
+  '3d',
+  'backend',
+  'ml',
+  'infrastructure',
+  'support',
+  'vp',
+  'technical',
+  'codeql',
+  'salesforce'
 ];
 
 function includeKeywords(job) {
-  return includeList.every((word) => job.title.includes(word));
+  return includeList.every((word) => job.title.toLowerCase().includes(word));
 }
 
 function excludeKeywords(job) {
-  return excludeList.every((word) => !job.title.includes(word));
+  return excludeList.every((word) => !job.title.toLowerCase().includes(word));
 }
 
 function sortJobs(a, b) {
@@ -75,6 +75,11 @@ const getEngineerJobs = async (company, options) => {
   return [filtered.join('<br />'), filtered.length];
 }
 
+function clearKeywords() {
+  document.getElementById("includes").innerHTML = '';
+  document.getElementById("excludes").innerHTML = '';
+}
+
 function displayKeywords() {
   includeList.forEach((word) => {
     document.getElementById("includes").innerHTML += `<span class="tag m-1">${word}</span>`;
@@ -84,7 +89,18 @@ function displayKeywords() {
   });
 }
 
+function updateKeyword(list) {
+  const input = document.getElementById(`${list}-input`);
+  const keyword = input.value.toLowerCase();
+  const array = list === 'include' ? includeList : excludeList;
+  if (!array.includes(keyword)) {
+    array.push(keyword);
+  }
+  input.value = '';
+}
+
 const go = async () => {
+  clearKeywords();
   displayKeywords();
 
   const companies = [
