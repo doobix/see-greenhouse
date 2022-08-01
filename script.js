@@ -26,6 +26,10 @@ let excludeList = [
   'salesforce'
 ];
 
+function getKeywords(list) {
+  return list === 'include' ? includeList : excludeList;
+}
+
 function includeKeywords(job) {
   return includeList.every((word) => job.title.toLowerCase().includes(word));
 }
@@ -152,10 +156,14 @@ const go = async () => {
 
 if (typeof module !== 'undefined') {
   module.exports = {
+    includeList,
+    excludeList,
+    getKeywords,
     includeKeywords,
     excludeKeywords,
     sortJobs,
     clearKeywords,
     displayKeywords,
+    deleteKeyword,
   }
 }

@@ -5,6 +5,12 @@
 const script = require('./script');
 const testJobs = require('./test-jobs');
 
+beforeEach(() => {
+  jest.resetModules();
+  jest.resetAllMocks();
+  jest.restoreAllMocks();
+});
+
 test('includes correct job keywords', () => {
   const includedJobs = testJobs.jobs.filter(script.includeKeywords);
   expect(includedJobs.length).toBe(18);
@@ -29,7 +35,7 @@ test('sorts job titles correctly', () => {
   expect(sortedJobs).toStrictEqual(expectedJobs);
 });
 
-test.only('clears keywords', () => {
+test('clears keywords', () => {
   document.body.innerHTML = `
     <div id="includes">x</div>
     <div id="excludes">x</div>
@@ -43,7 +49,7 @@ test.only('clears keywords', () => {
   expect(excludesElement.innerHTML).toBe('');
 });
 
-test.only('displays keywords', () => {
+test('displays keywords', () => {
   document.body.innerHTML = `
     <div id="includes"></div>
     <div id="excludes"></div>
@@ -57,4 +63,32 @@ test.only('displays keywords', () => {
   const excludeTags = excludesElement.querySelectorAll('span');
   expect(includeTags.length).toBe(1);
   expect(excludeTags.length).toBe(21);
+});
+
+test('does not delete keyword', () => {
+  const beforeIncludeList = script.getKeywords('include');
+  expect(beforeIncludeList.includes('engineer')).toStrictEqual(true);
+  script.deleteKeyword('include', 'eng');
+  const afterIncludeList = script.getKeywords('include');
+  expect(afterIncludeList.includes('engineer')).toStrictEqual(true);
+
+  const beforeExcludeList = script.getKeywords('exclude');
+  expect(beforeExcludeList.includes('happy')).toStrictEqual(false);
+  script.deleteKeyword('exclude', 'happy');
+  const afterExcludeList = script.getKeywords('exclude');
+  expect(afterExcludeList.includes('happy')).toStrictEqual(false);
+});
+
+test('deletes keywords correctly', () => {
+  const beforeIncludeList = script.getKeywords('include');
+  expect(beforeIncludeList.includes('engineer')).toStrictEqual(true);
+  script.deleteKeyword('include', 'engineer');
+  const afterIncludeList = script.getKeywords('include');
+  expect(afterIncludeList.includes('engineer')).toStrictEqual(false);
+
+  const beforeExcludeList = script.getKeywords('exclude');
+  expect(beforeExcludeList.includes('3d')).toStrictEqual(true);
+  script.deleteKeyword('exclude', '3d');
+  const afterExcludeList = script.getKeywords('exclude');
+  expect(afterExcludeList.includes('3d')).toStrictEqual(false);
 });
