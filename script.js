@@ -156,5 +156,6 @@ if (typeof module !== 'undefined') {
     excludeKeywords,
     sortJobs,
     clearKeywords,
+    displayKeywords,
   }
 }

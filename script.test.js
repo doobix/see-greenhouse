@@ -42,3 +42,19 @@ test.only('clears keywords', () => {
   expect(includesElement.innerHTML).toBe('');
   expect(excludesElement.innerHTML).toBe('');
 });
+
+test.only('displays keywords', () => {
+  document.body.innerHTML = `
+    <div id="includes"></div>
+    <div id="excludes"></div>
+  `;
+  const includesElement = document.getElementById('includes');
+  const excludesElement = document.getElementById('excludes');
+  expect(includesElement.innerHTML).toBe('');
+  expect(excludesElement.innerHTML).toBe('');
+  script.displayKeywords();
+  const includeTags = includesElement.querySelectorAll('span');
+  const excludeTags = excludesElement.querySelectorAll('span');
+  expect(includeTags.length).toBe(1);
+  expect(excludeTags.length).toBe(21);
+});
