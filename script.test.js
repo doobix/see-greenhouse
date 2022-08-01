@@ -5,12 +5,6 @@
 const script = require('./script');
 const testJobs = require('./test-jobs');
 
-beforeEach(() => {
-  jest.resetModules();
-  jest.resetAllMocks();
-  jest.restoreAllMocks();
-});
-
 test('includes correct job keywords', () => {
   const includedJobs = testJobs.jobs.filter(script.includeKeywords);
   expect(includedJobs.length).toBe(18);
