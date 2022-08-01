@@ -19,35 +19,43 @@
           </div>
           <div class="column is-one-third">
             <div class="mb-4">
-              <div>included keywords:</div>
-              <div class="field has-addons">
-                <div class="control">
-                  <input id="include" class="input" type="text" placeholder="keyword">
+              <article class="panel is-primary">
+                <p class="panel-heading">included keywords</p>
+                <div class="p-4">
+                  <div class="field has-addons">
+                    <div class="control">
+                      <input id="include" class="input" type="text" placeholder="keyword">
+                    </div>
+                    <div class="control">
+                      <a class="button is-link">
+                        include
+                      </a>
+                    </div>
+                  </div>
+                  <div id="includes"></div>
                 </div>
-                <div class="control">
-                  <a class="button is-info">
-                    include
-                  </a>
-                </div>
-              </div>
-              <div id="includes"></div>
+              </article>
             </div>
             <div class="mb-4">
-              <div>excluded keywords:</div>
-              <div class="field has-addons">
-                <div class="control">
-                  <input id="exclude" class="input" type="text" placeholder="keyword">
+              <article class="panel is-primary">
+                <p class="panel-heading">excluded keywords</p>
+                <div class="p-4">
+                  <div class="field has-addons">
+                    <div class="control">
+                      <input id="exclude" class="input" type="text" placeholder="keyword">
+                    </div>
+                    <div class="control">
+                      <a class="button is-link">
+                        exclude
+                      </a>
+                    </div>
+                  </div>
+                  <div id="excludes"></div>
                 </div>
-                <div class="control">
-                  <a class="button is-info">
-                    exclude
-                  </a>
-                </div>
-              </div>
-              <div id="excludes"></div>
+              </article>
             </div>
             <div class="mb-4">
-              <button onclick="go()" id="refresh" class="button is-primary is-loading">refresh</button>
+              <button onclick="go()" id="refresh" class="button is-link is-loading">refresh</button>
             </div>
           </div>
         </div>
