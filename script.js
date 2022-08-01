@@ -1,37 +1,37 @@
 let includeList = [
-  'Engineer'
+  'engineer'
 ];
 
 let excludeList = [
-  'Manager',
-  'Director',
-  'Data',
-  'Machine Learning',
-  'Security',
-  'Network',
-  'Systems',
-  'Principal',
-  'Reliability',
-  'Android',
-  'iOS',
-  'Staff',
-  '3D',
-  'Backend',
-  'ML',
-  'Infrastructure',
-  'Support',
-  'VP',
-  'Technical',
-  'CodeQL',
-  'Salesforce'
+  'manager',
+  'director',
+  'data',
+  'machine learning',
+  'security',
+  'network',
+  'systems',
+  'principal',
+  'reliability',
+  'android',
+  'ios',
+  'staff',
+  '3d',
+  'backend',
+  'ml',
+  'infrastructure',
+  'support',
+  'vp',
+  'technical',
+  'codeql',
+  'salesforce'
 ];
 
 function includeKeywords(job) {
-  return includeList.every((word) => job.title.includes(word));
+  return includeList.every((word) => job.title.toLowerCase().includes(word));
 }
 
 function excludeKeywords(job) {
-  return excludeList.every((word) => !job.title.includes(word));
+  return excludeList.every((word) => !job.title.toLowerCase().includes(word));
 }
 
 function sortJobs(a, b) {
@@ -75,23 +75,55 @@ const getEngineerJobs = async (company, options) => {
   return [filtered.join('<br />'), filtered.length];
 }
 
+function clearKeywords() {
+  document.getElementById("includes").innerHTML = '';
+  document.getElementById("excludes").innerHTML = '';
+}
+
 function displayKeywords() {
   includeList.forEach((word) => {
-    document.getElementById("includes").innerHTML += `<span class="tag m-1">${word}</span>`;
+    document.getElementById("includes").innerHTML += `<span class="tag m-1">${word} <button class="delete is-small" onclick="deleteKeyword('include', '${word}');go();"></button></span>`;
   });
   excludeList.forEach((word) => {
-    document.getElementById("excludes").innerHTML += `<span class="tag m-1">${word}</span>`;
+    document.getElementById("excludes").innerHTML += `<span class="tag m-1">${word} <button class="delete is-small" onclick="deleteKeyword('exclude', '${word}');go();"></button></span>`;
   });
 }
 
+function deleteKeyword(list, keyword) {
+  let array = list === 'include' ? includeList : excludeList;
+  const keywordIndex = array.indexOf(keyword);
+  if (keywordIndex === -1) {
+    return;
+  }
+  const firstHalf = array.slice(0, keywordIndex);
+  const secondHalf = array.slice(keywordIndex + 1);
+
+  if (list === 'include') {
+    includeList = firstHalf.concat(secondHalf);
+  } else {
+    excludeList = firstHalf.concat(secondHalf);
+  }
+}
+
+function updateKeyword(list) {
+  const input = document.getElementById(`${list}-input`);
+  const keyword = input.value.toLowerCase();
+  const array = list === 'include' ? includeList : excludeList;
+  if (!array.includes(keyword)) {
+    array.push(keyword);
+  }
+  input.value = '';
+}
+
 const go = async () => {
+  clearKeywords();
   displayKeywords();
 
   const companies = [
     {name: 'github', showDept: true, showLoc: true},
-    {name: 'reddit', showLoc: true, filterLocSF: true},
-    {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
-    {name: 'discord'},
+    // {name: 'reddit', showLoc: true, filterLocSF: true},
+    // {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
+    // {name: 'discord'},
   ];
   let isLoading = true;
   document.getElementById("refresh").classList.add('is-loading');
