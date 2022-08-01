@@ -121,9 +121,9 @@ const go = async () => {
 
   const companies = [
     {name: 'github', showDept: true, showLoc: true},
-    // {name: 'reddit', showLoc: true, filterLocSF: true},
-    // {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
-    // {name: 'discord'},
+    {name: 'reddit', showLoc: true, filterLocSF: true},
+    {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
+    {name: 'discord'},
   ];
   let isLoading = true;
   document.getElementById("refresh").classList.add('is-loading');
