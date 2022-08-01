@@ -12,19 +12,45 @@
       </nav>
     </section>
     <section class="section">
-      <div class="container is-max-desktop">
-        <div class="mb-4">
-          <div>Included keywords:</div>
-          <div id="includes"></div>
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <div id="results"></div>
+          </div>
+          <div class="column is-one-third">
+            <div class="mb-4">
+              <div>included keywords:</div>
+              <div class="field has-addons">
+                <div class="control">
+                  <input id="include" class="input" type="text" placeholder="keyword">
+                </div>
+                <div class="control">
+                  <a class="button is-info">
+                    include
+                  </a>
+                </div>
+              </div>
+              <div id="includes"></div>
+            </div>
+            <div class="mb-4">
+              <div>excluded keywords:</div>
+              <div class="field has-addons">
+                <div class="control">
+                  <input id="exclude" class="input" type="text" placeholder="keyword">
+                </div>
+                <div class="control">
+                  <a class="button is-info">
+                    exclude
+                  </a>
+                </div>
+              </div>
+              <div id="excludes"></div>
+            </div>
+            <div class="mb-4">
+              <button onclick="go()" id="refresh" class="button is-primary is-loading">refresh</button>
+            </div>
+          </div>
         </div>
-        <div class="mb-4">
-          <div>Excluded keywords:</div>
-          <div id="excludes"></div>
-        </div>
-        <div class="mb-4">
-          <button onclick="go()" id="refresh" class="button is-primary is-loading">refresh</button>
-        </div>
-        <div id="results"></div>
       </div>
     </section>
     <script src="script.js"></script>
