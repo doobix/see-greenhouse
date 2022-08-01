@@ -88,10 +88,10 @@ const go = async () => {
   displayKeywords();
 
   const companies = [
-    {name: 'discord'},
     {name: 'github', showDept: true, showLoc: true},
     {name: 'reddit', showLoc: true, filterLocSF: true},
     {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
+    {name: 'discord'},
   ];
   let isLoading = true;
   document.getElementById("refresh").classList.add('is-loading');
