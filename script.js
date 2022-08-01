@@ -155,8 +155,6 @@ if (typeof module !== 'undefined') {
     includeKeywords,
     excludeKeywords,
     sortJobs,
-    createJobOutput,
-    getEngineerJobs,
-    go
+    clearKeywords,
   }
 }

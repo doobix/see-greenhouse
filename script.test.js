@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 const script = require('./script');
 const testJobs = require('./test-jobs');
 
@@ -23,4 +27,18 @@ test('sorts job titles correctly', () => {
   const expectedJobs = [{title: 'avocado'}, {title: 'happy'}, {title: 'toast'}, {title: 'zebra'}];
   const sortedJobs = fakeJobs.sort(script.sortJobs);
   expect(sortedJobs).toStrictEqual(expectedJobs);
+});
+
+test.only('clears keywords', () => {
+  document.body.innerHTML = `
+    <div id="includes">x</div>
+    <div id="excludes">x</div>
+  `;
+  const includesElement = document.getElementById('includes');
+  const excludesElement = document.getElementById('excludes');
+  expect(includesElement.innerHTML).not.toBeNull();
+  expect(excludesElement.innerHTML).not.toBeNull();
+  script.clearKeywords();
+  expect(includesElement.innerHTML).toBe('');
+  expect(excludesElement.innerHTML).toBe('');
 });
