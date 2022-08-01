@@ -82,11 +82,27 @@ function clearKeywords() {
 
 function displayKeywords() {
   includeList.forEach((word) => {
-    document.getElementById("includes").innerHTML += `<span class="tag m-1">${word}</span>`;
+    document.getElementById("includes").innerHTML += `<span class="tag m-1">${word} <button class="delete is-small" onclick="deleteKeyword('include', '${word}');go();"></button></span>`;
   });
   excludeList.forEach((word) => {
-    document.getElementById("excludes").innerHTML += `<span class="tag m-1">${word}</span>`;
+    document.getElementById("excludes").innerHTML += `<span class="tag m-1">${word} <button class="delete is-small" onclick="deleteKeyword('exclude', '${word}');go();"></button></span>`;
   });
+}
+
+function deleteKeyword(list, keyword) {
+  let array = list === 'include' ? includeList : excludeList;
+  const keywordIndex = array.indexOf(keyword);
+  if (keywordIndex === -1) {
+    return;
+  }
+  const firstHalf = array.slice(0, keywordIndex);
+  const secondHalf = array.slice(keywordIndex + 1);
+
+  if (list === 'include') {
+    includeList = firstHalf.concat(secondHalf);
+  } else {
+    excludeList = firstHalf.concat(secondHalf);
+  }
 }
 
 function updateKeyword(list) {
