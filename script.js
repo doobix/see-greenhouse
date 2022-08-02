@@ -1,3 +1,5 @@
+const LOCAL_DOMAINS = ['localhost', '127.0.0.1', ''];
+
 let includeList = [
   'engineer'
 ];
@@ -60,10 +62,19 @@ function createJobOutput(job, options) {
   return jobTitle;
 }
 
-const getEngineerJobs = async (company, options) => {
-  options = options || {};
+const getJobs = async (company) => {
+  if (LOCAL_DOMAINS.includes(window.location.hostname)) {
+    const fakeRes = await fetch('./test-jobs.json');
+    let fakeData = await fakeRes.json();
+    return fakeData;
+  }
   let res = await fetch(`https://api.greenhouse.io/v1/boards/${company}/jobs?content=true`);
   let data = await res.json();
+  return data;
+}
+
+const adaptJobs = (data, options) => {
+  options = options || {};
   let filtered = data.jobs
     .filter(includeKeywords)
     .filter(excludeKeywords)
@@ -136,7 +147,8 @@ const go = async () => {
   for (let x=0; x < companies.length; x++) {
     const company = companies[x];
     let {name, ...options} = company;
-    const [jobs, count] = await getEngineerJobs(name, options);
+    const jobData = await getJobs(name);
+    const [jobs, count] = adaptJobs(jobData, options);
 
     if (isLoading) {
       isLoading = false;
