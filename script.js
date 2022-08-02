@@ -1,10 +1,10 @@
 const LOCAL_DOMAINS = ['localhost', '127.0.0.1', ''];
 
-let includeList = [
+let DEFAULT_INCLUDE = [
   'engineer'
 ];
 
-let excludeList = [
+let DEFAULT_EXCLUDE = [
   'manager',
   'director',
   'data',
@@ -28,8 +28,38 @@ let excludeList = [
   'salesforce'
 ];
 
+let includeList = [];
+let excludeList = [];
+
+function getLocalStorageLists() {
+  let includes = localStorage.getItem('include-list');
+  let excludes = localStorage.getItem('exclude-list');
+  includes = includes ? JSON.parse(includes) : [];
+  excludes = excludes ? JSON.parse(excludes) : [];
+  return [includes, excludes];
+}
+
+function setLocalStorageLists(list, keywords) {
+  const stringified = JSON.stringify(keywords);
+  localStorage.setItem(`${list}-list`, stringified);
+}
+
+function resetLists() {
+  setKeywords('include', DEFAULT_INCLUDE);
+  setKeywords('exclude', DEFAULT_EXCLUDE);
+}
+
 function getKeywords(list) {
   return list === 'include' ? includeList : excludeList;
+}
+
+function setKeywords(list, keywords) {
+  setLocalStorageLists(list, keywords)
+  if (list === 'include') {
+    includeList = keywords;
+  } else {
+    excludeList = keywords;
+  }
 }
 
 function includeKeywords(job) {
@@ -131,6 +161,14 @@ function addKeyword(list) {
 }
 
 const go = async () => {
+  const [includes, excludes] = getLocalStorageLists();
+  if (!includes.length && !excludes.length) {
+    resetLists();
+  } else {
+    setKeywords('include', includes);
+    setKeywords('exclude', excludes);
+  }
+
   clearKeywords();
   displayKeywords();
 
