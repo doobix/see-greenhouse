@@ -211,5 +211,6 @@ if (typeof module !== 'undefined') {
     displayKeywords,
     deleteKeyword,
     addKeyword,
+    resetLists,
   }
 }

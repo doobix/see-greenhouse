@@ -5,6 +5,16 @@
 const script = require('./script');
 const testJobs = require('./test-jobs');
 
+test('resets both lists', () => {
+  expect(script.includeList.length).toBe(0);
+  expect(script.excludeList.length).toBe(0);
+  script.resetLists();
+  const includeList = script.getKeywords('include');
+  const excludeList = script.getKeywords('exclude');
+  expect(includeList.length).toBe(1);
+  expect(excludeList.length).toBe(21);
+});
+
 test('includes correct job keywords', () => {
   const includedJobs = testJobs.jobs.filter(script.includeKeywords);
   expect(includedJobs.length).toBe(18);
