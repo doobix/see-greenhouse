@@ -142,12 +142,7 @@ function deleteKeyword(list, keyword) {
   }
   const firstHalf = array.slice(0, keywordIndex);
   const secondHalf = array.slice(keywordIndex + 1);
-
-  if (list === 'include') {
-    includeList = firstHalf.concat(secondHalf);
-  } else {
-    excludeList = firstHalf.concat(secondHalf);
-  }
+  setKeywords(list, firstHalf.concat(secondHalf))
 }
 
 function addKeyword(list) {
@@ -155,7 +150,7 @@ function addKeyword(list) {
   const keyword = input.value.toLowerCase();
   const array = list === 'include' ? includeList : excludeList;
   if (!array.includes(keyword)) {
-    array.push(keyword);
+    setKeywords(list, array.concat(keyword));
   }
   input.value = '';
 }
