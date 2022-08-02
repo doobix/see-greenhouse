@@ -1,8 +1,10 @@
-let includeList = [
+const LOCAL_DOMAINS = ['localhost', '127.0.0.1', ''];
+
+let DEFAULT_INCLUDE = [
   'engineer'
 ];
 
-let excludeList = [
+let DEFAULT_EXCLUDE = [
   'manager',
   'director',
   'data',
@@ -26,8 +28,38 @@ let excludeList = [
   'salesforce'
 ];
 
+let includeList = [];
+let excludeList = [];
+
+function getLocalStorageLists() {
+  let includes = localStorage.getItem('include-list');
+  let excludes = localStorage.getItem('exclude-list');
+  includes = includes ? JSON.parse(includes) : [];
+  excludes = excludes ? JSON.parse(excludes) : [];
+  return [includes, excludes];
+}
+
+function setLocalStorageLists(list, keywords) {
+  const stringified = JSON.stringify(keywords);
+  localStorage.setItem(`${list}-list`, stringified);
+}
+
+function resetLists() {
+  setKeywords('include', DEFAULT_INCLUDE);
+  setKeywords('exclude', DEFAULT_EXCLUDE);
+}
+
 function getKeywords(list) {
   return list === 'include' ? includeList : excludeList;
+}
+
+function setKeywords(list, keywords) {
+  setLocalStorageLists(list, keywords)
+  if (list === 'include') {
+    includeList = keywords;
+  } else {
+    excludeList = keywords;
+  }
 }
 
 function includeKeywords(job) {
@@ -60,10 +92,19 @@ function createJobOutput(job, options) {
   return jobTitle;
 }
 
-const getEngineerJobs = async (company, options) => {
-  options = options || {};
+const getJobs = async (company) => {
+  if (LOCAL_DOMAINS.includes(window.location.hostname)) {
+    const fakeRes = await fetch('./test-jobs.json');
+    let fakeData = await fakeRes.json();
+    return fakeData;
+  }
   let res = await fetch(`https://api.greenhouse.io/v1/boards/${company}/jobs?content=true`);
   let data = await res.json();
+  return data;
+}
+
+const adaptJobs = (data, options) => {
+  options = options || {};
   let filtered = data.jobs
     .filter(includeKeywords)
     .filter(excludeKeywords)
@@ -101,12 +142,7 @@ function deleteKeyword(list, keyword) {
   }
   const firstHalf = array.slice(0, keywordIndex);
   const secondHalf = array.slice(keywordIndex + 1);
-
-  if (list === 'include') {
-    includeList = firstHalf.concat(secondHalf);
-  } else {
-    excludeList = firstHalf.concat(secondHalf);
-  }
+  setKeywords(list, firstHalf.concat(secondHalf))
 }
 
 function addKeyword(list) {
@@ -114,12 +150,20 @@ function addKeyword(list) {
   const keyword = input.value.toLowerCase();
   const array = list === 'include' ? includeList : excludeList;
   if (!array.includes(keyword)) {
-    array.push(keyword);
+    setKeywords(list, array.concat(keyword));
   }
   input.value = '';
 }
 
 const go = async () => {
+  const [includes, excludes] = getLocalStorageLists();
+  if (!includes.length && !excludes.length) {
+    resetLists();
+  } else {
+    setKeywords('include', includes);
+    setKeywords('exclude', excludes);
+  }
+
   clearKeywords();
   displayKeywords();
 
@@ -136,7 +180,8 @@ const go = async () => {
   for (let x=0; x < companies.length; x++) {
     const company = companies[x];
     let {name, ...options} = company;
-    const [jobs, count] = await getEngineerJobs(name, options);
+    const jobData = await getJobs(name);
+    const [jobs, count] = adaptJobs(jobData, options);
 
     if (isLoading) {
       isLoading = false;
@@ -166,5 +211,6 @@ if (typeof module !== 'undefined') {
     displayKeywords,
     deleteKeyword,
     addKeyword,
+    resetLists,
   }
 }
