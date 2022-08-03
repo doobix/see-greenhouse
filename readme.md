@@ -21,10 +21,10 @@ npm install
 run a simple http server with this command:
 
 ```
-python -m SimpleHTTPServer 8000
+npx http-server
 ```
 
-the page can be viewed locally at http://localhost:8000
+the page can be viewed locally at http://localhost:8080
 
 # testing
 
