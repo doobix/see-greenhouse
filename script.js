@@ -34,8 +34,8 @@ let excludeList = [];
 function getLocalStorageLists() {
   let includes = localStorage.getItem('include-list');
   let excludes = localStorage.getItem('exclude-list');
-  includes = includes ? JSON.parse(includes) : [];
-  excludes = excludes ? JSON.parse(excludes) : [];
+  includes = includes ? JSON.parse(includes) : null;
+  excludes = excludes ? JSON.parse(excludes) : null;
   return [includes, excludes];
 }
 
@@ -47,6 +47,11 @@ function setLocalStorageLists(list, keywords) {
 function resetLists() {
   setKeywords('include', DEFAULT_INCLUDE);
   setKeywords('exclude', DEFAULT_EXCLUDE);
+}
+
+function clearLists() {
+  setKeywords('include', []);
+  setKeywords('exclude', []);
 }
 
 function getKeywords(list) {
@@ -157,7 +162,7 @@ function addKeyword(list) {
 
 const go = async () => {
   const [includes, excludes] = getLocalStorageLists();
-  if (!includes.length && !excludes.length) {
+  if (!includes && !excludes) {
     resetLists();
   } else {
     setKeywords('include', includes);
