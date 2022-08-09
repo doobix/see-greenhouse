@@ -1,5 +1,12 @@
 const LOCAL_DOMAINS = ['localhost', '127.0.0.1', ''];
 
+let DEFAULT_COMPANIES = [
+  {name: 'github', showDept: true, showLoc: true},
+  {name: 'reddit', showLoc: true, filterLocSF: true},
+  {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
+  {name: 'discord'},
+];
+
 let DEFAULT_INCLUDE = [
   'engineer'
 ];
@@ -28,6 +35,7 @@ let DEFAULT_EXCLUDE = [
   'salesforce'
 ];
 
+let companyList = [];
 let includeList = [];
 let excludeList = [];
 
@@ -44,14 +52,43 @@ function setLocalStorageLists(list, keywords) {
   localStorage.setItem(`${list}-list`, stringified);
 }
 
+function getLocalStorageCompanies() {
+  let companies = localStorage.getItem('company-list');
+  companies = companies ? JSON.parse(companies) : null;
+  return companies;
+}
+
+function setLocalStorageCompanies(companies) {
+  const stringified = JSON.stringify(companies);
+  localStorage.setItem('company-list', stringified);
+}
+
 function resetLists() {
   setKeywords('include', DEFAULT_INCLUDE);
   setKeywords('exclude', DEFAULT_EXCLUDE);
 }
 
+function resetCompanies() {
+  setCompanies(DEFAULT_COMPANIES);
+  return DEFAULT_COMPANIES;
+}
+
+function clearCompanies() {
+  setCompanies([]);
+}
+
 function clearLists() {
   setKeywords('include', []);
   setKeywords('exclude', []);
+}
+
+function getCompanies() {
+  return companyList;
+}
+
+function setCompanies(companies) {
+  setLocalStorageCompanies(companies)
+  companyList = companies;
 }
 
 function getKeywords(list) {
@@ -161,6 +198,13 @@ function addKeyword(list) {
 }
 
 const go = async () => {
+  let companies = getLocalStorageCompanies();
+  if (!companies) {
+    companies = resetCompanies();
+  } else {
+    setCompanies(companies);
+  }
+
   const [includes, excludes] = getLocalStorageLists();
   if (!includes && !excludes) {
     resetLists();
@@ -172,12 +216,6 @@ const go = async () => {
   clearKeywords();
   displayKeywords();
 
-  const companies = [
-    {name: 'github', showDept: true, showLoc: true},
-    {name: 'reddit', showLoc: true, filterLocSF: true},
-    {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
-    {name: 'discord'},
-  ];
   let isLoading = true;
   document.getElementById("refresh").classList.add('is-loading');
   document.getElementById("results").innerHTML = ``;
