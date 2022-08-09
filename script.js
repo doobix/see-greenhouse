@@ -255,5 +255,10 @@ if (typeof module !== 'undefined') {
     deleteKeyword,
     addKeyword,
     resetLists,
+    companyList,
+    getCompanies,
+    setCompanies,
+    clearCompanies,
+    resetCompanies,
   }
 }

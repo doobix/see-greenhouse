@@ -5,7 +5,7 @@
 const script = require('./script');
 const testJobs = require('./test-jobs');
 
-test('resets both lists', () => {
+test('resets both keyword lists', () => {
   expect(script.includeList.length).toBe(0);
   expect(script.excludeList.length).toBe(0);
   script.resetLists();
@@ -133,4 +133,30 @@ test('does not add duplicate keyword', () => {
   script.addKeyword('exclude', '3d');
   const afterExcludeList = script.getKeywords('exclude');
   expect(beforeExcludeList.length).toEqual(afterExcludeList.length);
+});
+
+test('resets company list', () => {
+  let companyList = script.getCompanies();
+  expect(companyList.length).toBe(0);
+  script.resetCompanies();
+  companyList = script.getCompanies();
+  expect(companyList.length).toBe(4);
+});
+
+test('clears company list', () => {
+  script.resetCompanies();
+  let companyList = script.getCompanies();
+  expect(companyList.length).toBe(4);
+  script.clearCompanies();
+  companyList = script.getCompanies();
+  expect(companyList.length).toBe(0);
+});
+
+test('sets company list correctly', () => {
+  script.resetCompanies();
+  let companyList = script.getCompanies();
+  expect(companyList.length).toBe(4);
+  script.setCompanies([{name: 'test'}]);
+  companyList = script.getCompanies();
+  expect(companyList.length).toBe(1);
 });
