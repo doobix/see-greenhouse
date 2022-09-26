@@ -2,8 +2,8 @@ const LOCAL_DOMAINS = ['localhost', '127.0.0.1', ''];
 
 let DEFAULT_COMPANIES = [
   {name: 'github', showDept: true, showLoc: true},
-  {name: 'reddit', showLoc: true, filterLocSF: true},
-  {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLocCA: true},
+  {name: 'reddit', showLoc: true, filterLoc: 'San Francisco'},
+  {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLoc: 'CA'},
   {name: 'discord'},
 ];
 
@@ -150,8 +150,7 @@ const adaptJobs = (data, options) => {
   let filtered = data.jobs
     .filter(includeKeywords)
     .filter(excludeKeywords)
-    .filter((j) => options.filterLocCA ? j.location.name.includes('CA') : true)
-    .filter((j) => options.filterLocSF ? j.location.name.includes('San Francisco') : true)
+    .filter((j) => options.filterLoc ? j.location.name.includes(options.filterLoc) : true)
     .sort(options.sortAfter ? () => {} : sortJobs)
     .map((j) => createJobOutput(j, options));
   
@@ -237,7 +236,7 @@ const go = async () => {
           <div class="columns">
             <div class="column is-11">${company.name} (${count} roles)</div>
             <div class="column is-1 has-text-right">
-              <button class="button is-small">
+              <button class="button is-small" data-target="edit-company" onclick="test(event, '${company.name}')">
                 <span class="icon is-small">
                   <i class="fas fa-edit"></i>
                 </span>
@@ -252,6 +251,58 @@ const go = async () => {
     `;
   }
 }
+
+function test(event, name) {
+  const modal = event.currentTarget.dataset.target;
+  const $target = document.getElementById(modal);
+  openModal($target);
+  document.getElementById("edit-company-name").innerHTML = `Edit ${name}`;
+  let companies = getLocalStorageCompanies();
+  if (companies) {
+    companies.forEach((company) => {
+      if (company.name === name) {
+        document.getElementById('edit-company-show-dept').checked = company.showDept;
+        document.getElementById('edit-company-show-loc').checked = company.showLoc;
+        document.getElementById('edit-company-filter-loc').value = company.filterLoc || '';
+      }
+    });
+  }
+}
+
+// Functions to open and close a modal
+function openModal($el) {
+  $el.classList.add('is-active');
+}
+
+function closeModal($el) {
+  $el.classList.remove('is-active');
+}
+
+function closeAllModals() {
+  (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+    closeModal($modal);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    const e = event || window.event;
+
+    if (e.keyCode === 27) { // Escape key
+      closeAllModals();
+    }
+  });
+});
 
 if (typeof module !== 'undefined') {
   module.exports = {
