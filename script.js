@@ -262,6 +262,7 @@ function test(event, name) {
     companies.forEach((company) => {
       if (company.name === name) {
         document.getElementById('edit-company-show-dept').checked = company.showDept;
+        document.getElementById('edit-company-sort-dept').checked = company.sortAfter;
         document.getElementById('edit-company-show-loc').checked = company.showLoc;
         document.getElementById('edit-company-filter-loc').value = company.filterLoc || '';
       }
