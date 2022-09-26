@@ -6,7 +6,7 @@ view and filter job listings from companies that use greenhouse
 
 # view live page
 
-[doobix.github.io/see-greenhouse](https://doobix.github.io/see-greenhouse)
+[greenhouse.seewes.com](https://greenhouse.seewes.com)
 
 # installation
 
