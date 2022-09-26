@@ -82,7 +82,47 @@
         </a>
       </div>
     </footer>
+
+    <div id="edit-company" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p id="edit-company-name" class="modal-card-title"></p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div>
+            <label class="checkbox" disabled>
+              <input id="edit-company-show-dept" type="checkbox" disabled>
+              Show department
+            </label>
+          </div>
+          <div>
+            <label class="checkbox" disabled>
+              <input id="edit-company-sort-dept" type="checkbox" disabled>
+              Sort by department
+            </label>
+          </div>
+          <div>
+            <label class="checkbox" disabled>
+              <input id="edit-company-show-loc" type="checkbox" disabled>
+              Show location
+            </label>
+          </div>
+          <div>
+            Filter roles by location
+            <input id="edit-company-filter-loc" class="input" type="text" placeholder="Location">
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" disabled>Save</button>
+          <button class="button">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
     <script src="script.js"></script>
     <script>go();</script>
+    <script src="https://kit.fontawesome.com/f54c2d2a5a.js" crossorigin="anonymous"></script>
   </body>
 </html>
