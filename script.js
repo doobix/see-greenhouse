@@ -233,7 +233,18 @@ const go = async () => {
     
     document.getElementById("results").innerHTML += `
       <article class="panel is-info">
-        <p class="panel-heading">${company.name} (${count} roles)</p>
+        <div class="panel-heading">
+          <div class="columns">
+            <div class="column is-11">${company.name} (${count} roles)</div>
+            <div class="column is-1 has-text-right">
+              <button class="button is-small">
+                <span class="icon is-small">
+                  <i class="fas fa-edit"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
         <div class="p-4">
           ${jobs}
         </div>
