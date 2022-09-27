@@ -128,7 +128,7 @@ function sortJobs(a, b) {
 function createJobOutput(job, options) {
   const dept = job.departments.length ? job.departments[0].name : '';
   const loc = job.location && job.location.name ? job.location.name : '';
-  let jobTitle = `<b><a href="${job.absolute_url}">${job.title}</a></b>`;
+  let jobTitle = `<b><a href="${job.absolute_url}" target="_blank">${job.title}</a></b>`;
   jobTitle = options.showDept && dept ? dept + ' - ' + jobTitle : jobTitle;
   jobTitle = options.showLoc && loc ? jobTitle + ' (' + loc + ')' : jobTitle;
   return jobTitle;
