@@ -2,7 +2,7 @@ const LOCAL_DOMAINS = ['localhost', '127.0.0.1', ''];
 
 let DEFAULT_COMPANIES = [
   {name: 'github', showDept: true, showLoc: true},
-  {name: 'reddit', showLoc: true, filterLoc: 'San Francisco'},
+  {name: 'reddit', showLoc: true, filterLoc: 'Remote'},
   {name: 'twitch', showDept: true, showLoc: false, sortAfter: true, filterLoc: 'CA'},
   {name: 'discord'},
 ];
