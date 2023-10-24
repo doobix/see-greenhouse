@@ -141,6 +141,9 @@ const getJobs = async (company) => {
     return fakeData;
   }
   let res = await fetch(`https://api.greenhouse.io/v1/boards/${company}/jobs?content=true`);
+  if (res.status !== 200) {
+    return {jobs: []};
+  }
   let data = await res.json();
   return data;
 }
